@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+<link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -8,7 +12,7 @@
                 <div class="panel-heading"><h1>Referrals</h1></div>
 
                 <div class="panel-body">
-                    <div>@include('partials.filterReferrals') @include('partials.createReferralButton')</div>
+                    <div>@include('partials.createReferralButton')</div>
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
@@ -19,8 +23,8 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <table class="table">
-                        <tr>
+                    <table class="table" id="referral-table">
+                        <thead>
                             <th>Country</th>
                             <th>Reference No</th>
                             <th>Organisation</th>
@@ -41,7 +45,8 @@
                             <th>Type of Service</th>
                             <th>Note</th>
                             <th>Womens Evaluation</th>
-                        </tr>
+                            <th>Action</th>
+                        </thead>
                         @foreach($referrals as $referral)
                         <tr>
                             <td>{{ $referral->country }} </td>
@@ -64,17 +69,86 @@
                             <td>{{ $referral->type_of_service }} </td>
                             <td>{{ $referral->note }} </td>
                             <td>{{ $referral->womens_evaluation }} </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                      Action
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <ul>
+                                            <li>
+                                                <a class="dropdown-item" href="{{url('comments/create/'.$referral->id)}}">Add Comment</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="{{url('comments/referral/'.$referral->id)}}">View Comments</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                  </div>
+                            </td>
                         </tr>
                         @endforeach
+                        <tfoot>
+                            <tr>
+                                <th>Country</th>
+                                <th>Reference No</th>
+                                <th>Organisation</th>
+                                <th>Province</th>
+                                <th>District</th>
+                                <th>City</th>
+                                <th>Street Address</th>
+                                <th>Gps Location</th>
+                                <th>Facility Name</th>
+                                <th>Facility Type</th>
+                                <th>Provider Name</th>
+                                <th>Position</th>
+                                <th>Phone</th>
+                                <th>eMail</th>
+                                <th>Website</th>
+                                <th>Pills Available</th>
+                                <th>Code To Use</th>
+                                <th>Type of Service</th>
+                                <th>Note</th>
+                                <th>Womens Evaluation</th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 
-                <div class="panel-footer">
+                {{-- <div class="panel-footer">
                     {{ $referrals->links() }}
-                </div>
+                </div> --}}
 
             </div>
         </div>
     </div>
 </div>
+@endsection
+@section('js')
+<script type="text/javascript">
+let table = new DataTable('#referral-table', {
+    scrollX: true,
+    initComplete: function () {
+        this.api()
+            .columns()
+            .every(function () {
+                let column = this;
+                let title = column.footer().textContent;
+ 
+                // Create input element
+                let input = document.createElement('input');
+                input.placeholder = title;
+                column.footer().replaceChildren(input);
+ 
+                // Event listener for user input
+                input.addEventListener('keyup', () => {
+                    if (column.search() !== this.value) {
+                        column.search(input.value).draw();
+                    }
+                });
+            });
+    }
+
+});
+</script>
 @endsection

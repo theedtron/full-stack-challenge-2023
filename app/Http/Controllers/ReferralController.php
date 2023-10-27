@@ -18,30 +18,9 @@ class ReferralController extends Controller
      */
     public function index($country=null, $city=null)
     {
-        // echo $country; 
-
-        $countries = array();
-        $cities = array();
-        $country_filter = false;
-        //
-        if($country == null) { 
-            $referrals = Referral::paginate(15);
-            $countries = Referral::getCountries();
-        }
-        elseif($city == null) {
-            $country_filter = true;
-            $referrals = Referral::where("country", $country)->paginate(15);
-            $countries = array($country);
-            $cities = Referral::getCities($country);
-        }
-        else {
-            $country_filter = true;
-            $referrals = Referral::where("country", $country)->where("city", $city)->paginate(15);
-            $countries = array($country);
-            $cities = array($city);
-        }
+        $referrals = Referral::all();
         
-        return view('referrals.index', compact('referrals', 'countries', 'cities'))->with('country_filter', $country_filter);
+        return view('referrals.index', compact('referrals'));
     }
 
     /**
@@ -178,7 +157,13 @@ class ReferralController extends Controller
                     // print_r($data);
                     if(count($cols) == count($data)) {
                         $arr = array_combine($cols, $data);
-                        Referral::create($arr);    
+
+                        // $final = [];
+                        // for($i=0; $i<count($data); $i++){
+                        //     array_push($final,[$cols[$i] => encrypt($data[$i])]);
+                        // }
+                        
+                        Referral::create($arr);
                         $ctr++;
                     }
                     else {

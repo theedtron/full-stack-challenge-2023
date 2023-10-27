@@ -1,0 +1,5 @@
+.dataTables_wrapper {
+    position: relative;
+    clear: both;
+    overflow-x: overlay;
+}
