@@ -68,7 +68,7 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
-                                    {{-- @if(Auth::user()->roles[0]->role_name == 'admin') --}}
+                                    @if(Auth::user()->roles[0]->role_name == 'admin')
                                     <li>
                                         <a href="{{ url('users/create') }}">
                                             Add User
@@ -77,7 +77,7 @@
                                             Users
                                         </a>
                                     </li>
-                                    {{-- @endif --}}
+                                    @endif
                                 </ul>
                             </li>
                         @endguest

@@ -38,7 +38,7 @@
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                      Dropdown button
+                                      Action
                                     </button>
                                     <div class="dropdown-menu">
                                         <ul>

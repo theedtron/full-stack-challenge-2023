@@ -21,27 +21,28 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'ReferralController@index')->name('home');
+Route::get('/home', 'ReferralController@index')->name('home')->middleware('role:admin,supervisor,executive');
+Route::get('/banned', 'HomeController@banned')->name('banned');
 
 //Routes for Posts
-Route::get('posts', 'PostsController@index');
-Route::post('posts', 'PostsController@store');
-Route::get('posts/create', 'PostsController@create');
-Route::get('posts/{post}', 'PostsController@show');
+// Route::get('posts', 'PostsController@index');
+// Route::post('posts', 'PostsController@store');
+// Route::get('posts/create', 'PostsController@create');
+// Route::get('posts/{post}', 'PostsController@show');
 
 //Routes for Referrals
 Route::get('referrals/upload', 'ReferralController@upload')->middleware('role:admin,supervisor');
 Route::post('referrals/upload', 'ReferralController@processUpload');
 Route::get('referrals/create', 'ReferralController@create')->name('add-referral')->middleware('role:admin,supervisor');
-Route::get('referrals', 'ReferralController@index');
+Route::get('referrals', 'ReferralController@index')->middleware('role:admin,supervisor,executive');
 Route::post('referrals', 'ReferralController@store');
 
 //Logged in Users
-Route::get('my-posts', 'AuthorsController@posts')->name('my-posts');
+// Route::get('my-posts', 'AuthorsController@posts')->name('my-posts');
 
 //Routes for Authors
-Route::get('authors', 'AuthorsController@index');
-Route::get('authors/{author}', 'AuthorsController@show');
+// Route::get('authors', 'AuthorsController@index');
+// Route::get('authors/{author}', 'AuthorsController@show');
 
 Route::middleware('role:admin')->prefix('users')->group( function () {
 	Route::get('/', 'UserController@index');

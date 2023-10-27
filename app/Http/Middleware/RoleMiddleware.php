@@ -21,7 +21,7 @@ class RoleMiddleware
             return $next($request);
         }
         
-        return redirect('/dashboard')->with('error','Restricted Access. Contact admin');
+        return redirect('/referrals')->with('error','Restricted Access. Contact admin');
         
     }
 }
